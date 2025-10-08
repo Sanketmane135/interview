@@ -1,10 +1,8 @@
-const fs = require("fs");
-const path = require("path");
 const pdf = require("pdf-parse");
 const multer = require("multer");
 
-// Configure multer (store uploaded files in 'uploads/' folder)
-const upload = multer({ dest: "uploads/" });
+// Use memory storage (no file saved to disk)
+const upload = multer({ storage: multer.memoryStorage() });
 
 function cleanPdfText(rawText) {
   return rawText
@@ -18,25 +16,17 @@ function cleanPdfText(rawText) {
 // PDF parsing controller
 const parsePdf = async (req, res) => {
   try {
-    // Check if file exists
     if (!req.file) {
       return res.status(400).json({ error: "No PDF file uploaded" });
     }
 
-    const filePath = path.resolve(req.file.path);
+    // Access the PDF directly from memory
+    const dataBuffer = req.file.buffer;
 
-    console.log("Uploaded PDF file path:", filePath);
-
-    // Read file as buffer
-    const dataBuffer = fs.readFileSync(filePath);
-
-    // Parse PDF
+    // Parse PDF content
     const data = await pdf(dataBuffer);
 
     const cleanedText = cleanPdfText(data.text);
-
-    // Remove uploaded file after parsing (optional)
-    fs.unlinkSync(filePath);
 
     res.json({
       numpages: data.numpages,
