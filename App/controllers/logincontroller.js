@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 const crypto = require("crypto");
-const usermodel = require("../models/usermodel");
+const usermodel = require("../models/user.model");
 
 
 const otps = new Map();

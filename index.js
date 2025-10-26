@@ -9,6 +9,7 @@ const { parsePdf,upload } = require("./App/controllers/pdfparser");
 const {  startInterview } = require("./App/controllers/aicontroller");
 const { givefeedback } = require("./App/controllers/feedbackcontroller");
 const { limiter, optsend, verifyOtp, createUser, checkUser } = require("./App/controllers/logincontroller");
+const { addUserdata, updateUserdata, getUserCreatedData } = require("./App/controllers/userdatacontroller");
 
 const app = express();
 const port = 3001;
@@ -35,6 +36,12 @@ app.post("/verify-email-otp", verifyOtp);
 app.post("/create-user",  createUser);
 
 app.post("/login-user",  checkUser);
+
+app.post("/adduserdata", addUserdata);
+
+app.put("/upadatedata/:id",updateUserdata);
+
+app.post("/getuserdata", getUserCreatedData)
 
 
 
